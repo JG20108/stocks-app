@@ -5,6 +5,7 @@ interface StockCardProps {
   currentValue: number;
   marginChange: number;
   change: number; 
+  alertPrice: number; 
 }
 
 const StockCard: React.FC<StockCardProps> = ({ stockName, currentValue, marginChange, change }) => {
