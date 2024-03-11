@@ -17,6 +17,9 @@ const StockSelectionForm: React.FC<StockSelectionFormProps> = ({ onSubmit, stock
   // Handles form submission, preventing default action and calling onSubmit prop
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const isConfirmed = window.confirm('Are you sure you want to set this alert?');
+    if (!isConfirmed) return;
+
     Notification.requestPermission().then(permission => {
       if (permission === "granted") {
         console.log("Notification permission granted.");
