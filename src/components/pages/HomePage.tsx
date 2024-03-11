@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import StockSelectionForm from '@organisms/StockSelectionForm';
 import StockCard from '@molecules/StockCard';
 import StockGraph from '@organisms/StockGraph';
+import { messaging } from '../../firebaseConfig';
+import { getToken, onMessage } from 'firebase/messaging';
 
 // Define an interface for the stock data
 interface Stock {
@@ -24,6 +26,33 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Request permission for notifications
+    const requestPermission = async () => {
+      try {
+        const currentToken = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY' });
+        if (currentToken) {
+          console.log('Token:', currentToken);
+          // Send the token to your server and update the UI if necessary
+          // For example, save the token to localStorage
+        } else {
+          console.log('No registration token available. Request permission to generate one.');
+        }
+      } catch (error) {
+        console.error('An error occurred while retrieving token. ', error);
+      }
+    };
+
+    requestPermission();
+  }, []);
+
+  useEffect(() => {
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      // Handle the received push notification here
+    });
+  }, []);
+
+  useEffect(() => {
     let debounceTimer: NodeJS.Timeout;
     const socket = new WebSocket(`wss://ws.finnhub.io?token=${import.meta.env.VITE_FINNHUB_API_KEY}`);
 
@@ -31,7 +60,6 @@ const HomePage: React.FC = () => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         stockOptions.forEach(stock => {
-          console.log(`Subscribing to: ${stock}`); // Log the symbol being subscribed to
           socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock}));
         });
       }, 1000); // Adjust debounce time as needed
@@ -41,7 +69,6 @@ const HomePage: React.FC = () => {
 
     socket.addEventListener('message', (event) => {
       const response = JSON.parse(event.data);
-      console.log(`Message received for: ${response.data ? response.data[0].s : 'Unknown symbol'}`, response); // Log the symbol and response
       if (response.type === "trade" && response.data) {
         setStocks((currentStocks) => {
           const newTrades = response.data.map((trade: { s: string; p: number }) => {
@@ -129,4 +156,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
