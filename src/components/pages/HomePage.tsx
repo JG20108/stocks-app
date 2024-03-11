@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
   } else {
     return (
       <div className="stock-info">
-        <div className="stock-selection-form">
+        <div className="stock-selection-form mr-12">
           <StockSelectionForm onSubmit={handleSubmit} stockOptions={stocks.map(stock => stock.name)} />
         </div>
         <div className="stock-display">
@@ -109,7 +109,7 @@ const HomePage: React.FC = () => {
             ))}
           </div>
           {stocks.map((stock, index) => (
-            <div key={index} className="stock-graph-container bg-white p-2 mb-8">
+            <div key={index} className="stock-graph-container bg-white p-2 mb-8" style={{ width: '51.25rem' }}>
               <StockGraph data={{
                 labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
                 datasets: [{
