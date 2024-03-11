@@ -16,6 +16,7 @@ const HomePage: React.FC = () => {
   const stockOptions = useMemo(() => ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN'], []);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [alertPrices, setAlertPrices] = useState<{ [key: string]: number }>({});
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
 
   // Define handleSubmit function
   const handleSubmit = (selectedStock: string, alertPrice: number) => {
@@ -85,34 +86,45 @@ const HomePage: React.FC = () => {
     };
   }, [stockOptions]); // Note the dependency on stockOptions
 
-  return (
-    <div className="stock-info">
-      <div className="stock-selection-form">
-        <StockSelectionForm onSubmit={handleSubmit} stockOptions={stocks.map(stock => stock.name)} />
-      </div>
-      <div className="stock-display">
-        <div className="stock-cards-container">
+  useEffect(() => {
+    if (stocks.length > 0) {
+      setIsLoading(false);
+    }
+  }, [stocks]);
+
+  if (isLoading) {
+    return <div className="spinner">Loading Stocks from Finnhub API...</div>;
+  } else {
+    return (
+      <div className="stock-info">
+        <div className="stock-selection-form">
+          <StockSelectionForm onSubmit={handleSubmit} stockOptions={stocks.map(stock => stock.name)} />
+        </div>
+        <div className="stock-display">
+          <div className="stock-cards-container">
+            {stocks.map((stock, index) => (
+              <StockCard key={index} stockName={stock.name} currentValue={stock.currentValue} marginChange={stock.marginChange} change={stock.change} alertPrice={alertPrices[stock.name] || 0} />
+            ))}
+          </div>
           {stocks.map((stock, index) => (
-            <StockCard key={index} stockName={stock.name} currentValue={stock.currentValue} marginChange={stock.marginChange} change={stock.change} alertPrice={alertPrices[stock.name] || 0} />
+            <div key={index} className="stock-graph-container bg-white p-2 mb-8">
+              <StockGraph data={{
+                labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
+                datasets: [{
+                  label: stock.name,
+                  data: stock.history, 
+                  fill: false,
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgba(255, 99, 132, 0.2)',
+                }]
+              }} />
+            </div>
           ))}
         </div>
-        {stocks.map((stock, index) => (
-          <div key={index} className="stock-graph-container bg-white p-2 mb-8">
-            <StockGraph data={{
-              labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
-              datasets: [{
-                label: stock.name,
-                data: stock.history, 
-                fill: false,
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgba(255, 99, 132, 0.2)',
-              }]
-            }} />
-          </div>
-        ))}
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default HomePage;
+
