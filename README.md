@@ -2,6 +2,10 @@
 
 This application is built using React, TypeScript, and Vite, providing real-time stock information leveraging the Finnhub API 🌐. It's designed with a focus on modularity and reusability, featuring multiple components that handle different aspects of the application.
 
+## Live Demo 🚀
+
+Check out the live demo of the Stocks App here: [Stocks App Live Demo](https://stocks-dh1u6e81r-jg20108.vercel.app)
+
 ## Application Structure 🏗️
 
 The Stocks App is structured into several key components, each responsible for a distinct part of the application's functionality:
