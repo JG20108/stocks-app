@@ -33,7 +33,6 @@ const HomePage: React.FC = () => {
           try {
             const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY });
             if (currentToken) {
-              console.log('Token:', currentToken);
               localStorage.setItem('fcmToken', currentToken);
             } else {
               console.log('No registration token available. Request permission to generate one.');

@@ -17,7 +17,15 @@ const StockSelectionForm: React.FC<StockSelectionFormProps> = ({ onSubmit, stock
   // Handles form submission, preventing default action and calling onSubmit prop
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(selectedStock, parseFloat(alertPrice));
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+        onSubmit(selectedStock, parseFloat(alertPrice));
+        // You can also include logic here to subscribe the user to notifications
+      } else {
+        console.log("Unable to get permission to notify.");
+      }
+    });
   };
 
   // Renders a form with a select dropdown for stocks and input for alert price
@@ -35,6 +43,7 @@ const StockSelectionForm: React.FC<StockSelectionFormProps> = ({ onSubmit, stock
         onChange={(e) => setAlertPrice(e.target.value)}
         inputProps={{
           min: "0", 
+          step: "0.01",
         }}
       />
       <Button label="Set Alert" onClick={() => {}} />
