@@ -13,7 +13,7 @@ interface Stock {
 }
 
 const HomePage: React.FC = () => {
-  const stockOptions = useMemo(() => ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN'], []);
+  const stockOptions = useMemo(() => ['AAPL', 'GOOGL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN', 'BYND', 'UPOW', 'EXCOF', 'FSLY', 'AMD', 'TSLA'], []);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [alertPrices, setAlertPrices] = useState<{ [key: string]: number }>({});
   const [isLoading, setIsLoading] = useState(true); // Added loading state
@@ -31,6 +31,7 @@ const HomePage: React.FC = () => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         stockOptions.forEach(stock => {
+          console.log(`Subscribing to: ${stock}`); // Log the symbol being subscribed to
           socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock}));
         });
       }, 1000); // Adjust debounce time as needed
@@ -40,6 +41,7 @@ const HomePage: React.FC = () => {
 
     socket.addEventListener('message', (event) => {
       const response = JSON.parse(event.data);
+      console.log(`Message received for: ${response.data ? response.data[0].s : 'Unknown symbol'}`, response); // Log the symbol and response
       if (response.type === "trade" && response.data) {
         setStocks((currentStocks) => {
           const newTrades = response.data.map((trade: { s: string; p: number }) => {
@@ -127,4 +129,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
