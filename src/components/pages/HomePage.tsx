@@ -9,23 +9,16 @@ interface Stock {
   currentValue: number;
   marginChange: number;
   change: number;
-}
-
-interface Trade {
-  name: string;
-  currentValue: number;
-  marginChange: number;
-  change: number;
+  history: number[]; // Add this line
 }
 
 const HomePage: React.FC = () => {
-  const stockOptions = useMemo(() => ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1'], []);
+  const stockOptions = useMemo(() => ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN'], []);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [alertPrices, setAlertPrices] = useState<{ [key: string]: number }>({});
 
   // Define handleSubmit function
   const handleSubmit = (selectedStock: string, alertPrice: number) => {
-    console.log("Form submitted with stock:", selectedStock);
     setAlertPrices(prev => ({ ...prev, [selectedStock]: alertPrice }));
   };
 
@@ -39,25 +32,32 @@ const HomePage: React.FC = () => {
         stockOptions.forEach(stock => {
           socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock}));
         });
-        console.log("Subscribed to stocks after debounce.");
       }, 1000); // Adjust debounce time as needed
     };
 
     socket.addEventListener('open', subscribeToStocks);
 
     socket.addEventListener('message', (event) => {
-      console.log("Message from server:", event.data); // Log every message received
       const response = JSON.parse(event.data);
       if (response.type === "trade" && response.data) {
         setStocks((currentStocks) => {
-          const newTrades = response.data.map((trade: { s: string; p: number }) => ({
-            name: trade.s,
-            currentValue: trade.p,
-            marginChange: 0, // Update logic as needed
-            change: 0, // Update logic as needed
-          }));
+          const newTrades = response.data.map((trade: { s: string; p: number }) => {
+            const existingStock = currentStocks.find(stock => stock.name === trade.s);
+            const history = existingStock ? [...existingStock.history, trade.p] : [trade.p]; // Update history
+            const previousValue = existingStock ? existingStock.currentValue : trade.p; 
+            const change = trade.p - previousValue;
+            const marginChange = (change / previousValue) * 100;
+
+            return {
+              name: trade.s,
+              currentValue: trade.p,
+              marginChange: marginChange,
+              change: change,
+              history: history.slice(-50) // Keep the last 50 data points
+            };
+          });
           const updatedStocks = [...currentStocks];
-          newTrades.forEach((newTrade: Trade) => {
+          newTrades.forEach((newTrade: Stock) => {
             const index = updatedStocks.findIndex(stock => stock.name === newTrade.name);
             if (index !== -1) {
               updatedStocks[index] = { ...updatedStocks[index], ...newTrade };
@@ -82,19 +82,35 @@ const HomePage: React.FC = () => {
         }
       });
       socket.close();
-      console.log("WebSocket connection closed.");
     };
   }, [stockOptions]); // Note the dependency on stockOptions
 
   return (
     <div className="stock-info">
-      <StockSelectionForm onSubmit={handleSubmit} stockOptions={stockOptions} />
+      <div className="stock-selection-form">
+        <StockSelectionForm onSubmit={handleSubmit} stockOptions={stockOptions} />
+      </div>
       <div className="stock-display">
+        <div className="stock-cards-container">
+          {stocks.map((stock, index) => (
+            <StockCard key={index} stockName={stock.name} currentValue={stock.currentValue} marginChange={stock.marginChange} change={stock.change} alertPrice={alertPrices[stock.name] || 0} />
+          ))}
+        </div>
         {stocks.map((stock, index) => (
-          <StockCard key={index} stockName={stock.name} currentValue={stock.currentValue} marginChange={stock.marginChange} change={stock.change} alertPrice={alertPrices[stock.name] || 0} />
+          <div key={index} className="stock-graph-container bg-white p-2 mb-8">
+            <StockGraph data={{
+              labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
+              datasets: [{
+                label: stock.name,
+                data: stock.history, 
+                fill: false,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+              }]
+            }} />
+          </div>
         ))}
       </div>
-      <StockGraph data={{ labels: ['Jan', 'Feb'], datasets: [{ label: 'AAPL', data: [150, 155], fill: false, backgroundColor: 'rgb(255, 99, 132)', borderColor: 'rgba(255, 99, 132, 0.2)', }] }} />
     </div>
   );
 };

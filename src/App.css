@@ -44,3 +44,29 @@ input, select {
   background-color: #fff; /* Ensure visibility */
   color: #333; /* Text color */
 }
+.stock-info {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.stock-selection-form {
+  flex: 1;
+}
+
+.stock-display {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.stock-graph-container {
+  width: 100%;
+}

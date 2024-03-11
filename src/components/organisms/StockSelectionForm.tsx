@@ -29,6 +29,9 @@ const StockSelectionForm: React.FC<StockSelectionFormProps> = ({ onSubmit, stock
         placeholder="Set alert price"
         value={alertPrice}
         onChange={(e) => setAlertPrice(e.target.value)}
+        inputProps={{
+          min: "0", 
+        }}
       />
       <Button label="Set Alert" onClick={() => {}} />
     </form>
