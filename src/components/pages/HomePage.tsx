@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
     // Request permission for notifications
     const requestPermission = async () => {
       try {
-        const currentToken = await getToken(messaging, { vapidKey: process.env.REACT_APP_VAPID_KEY });
+        const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY });
         if (currentToken) {
           console.log('Token:', currentToken);
           // Send the token to your server and update the UI if necessary
