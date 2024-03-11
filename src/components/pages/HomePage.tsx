@@ -15,7 +15,7 @@ interface Stock {
 }
 
 const HomePage: React.FC = () => {
-  const stockOptions = useMemo(() => ['AAPL', 'GOOGL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN', 'BYND', 'UPOW', 'EXCOF', 'FSLY', 'AMD', 'TSLA'], []);
+  const stockOptions = useMemo(() => ['AAPL', 'GOOGL', 'BINANCE:BTCUSDT','IC MARKETS:5', 'IC MARKETS:2' ,'IC MARKETS:1', 'MSFT', 'AMZN', 'BYND', 'UPOW', 'EXCOF', 'FSLY', 'AMD', 'TSLA'], []);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [alertPrices, setAlertPrices] = useState<{ [key: string]: number }>({});
   const [isLoading, setIsLoading] = useState(true); 
