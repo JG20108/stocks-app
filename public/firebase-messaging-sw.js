@@ -15,10 +15,10 @@ const messaging = self.firebase.messaging();
 messaging.onBackgroundMessage(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   // Customize notification here
-  const notificationTitle = 'Background Message Title';
+  const notificationTitle = 'Price Alert';
   const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/firebase-logo.png'
+    body: 'Price Alert!!!',
+    icon: './firebase-1.svg'
   };
 
   self.registration.showNotification(notificationTitle,

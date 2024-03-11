@@ -26,23 +26,27 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    // Request permission for notifications
-    const requestPermission = async () => {
-      try {
-        const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY });
-        if (currentToken) {
-          console.log('Token:', currentToken);
-          // Send the token to your server and update the UI if necessary
-          // For example, save the token to localStorage
-        } else {
-          console.log('No registration token available. Request permission to generate one.');
-        }
-      } catch (error) {
-        console.error('An error occurred while retrieving token. ', error);
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+        const requestPermission = async () => {
+          try {
+            const currentToken = await getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY });
+            if (currentToken) {
+              console.log('Token:', currentToken);
+              localStorage.setItem('fcmToken', currentToken);
+            } else {
+              console.log('No registration token available. Request permission to generate one.');
+            }
+          } catch (error) {
+            console.error('An error occurred while retrieving token. ', error);
+          }
+        };
+        requestPermission();
+      } else {
+        console.log("Unable to get permission to notify.");
       }
-    };
-
-    requestPermission();
+    });
   }, []);
 
   useEffect(() => {
