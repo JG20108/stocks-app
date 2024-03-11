@@ -22,7 +22,6 @@ The Stocks App is structured into several key components, each responsible for a
 - **Vite**: A modern frontend build tool.
 - **Chart.js**: Simple yet flexible JavaScript charting for designers & developers.
 - **React Chartjs-2**: React components for Chart.js.
-- **React Redux**: Official React bindings for Redux.
 - **Socket.IO-Client**: Real-time bidirectional event-based communication.
 - **Firebase**: A comprehensive app development platform that provides functionalities like authentication, databases, cloud messaging, and more.
 
@@ -32,7 +31,6 @@ The Stocks App is structured into several key components, each responsible for a
 - `react`: A JavaScript library for building user interfaces, particularly single-page applications where you need a fast, interactive user experience.
 - `react-chartjs-2`: A React wrapper for Chart.js, making it easy to create Chart.js components within a React application.
 - `react-dom`: The package that provides DOM-specific methods that can be used at the top level of a web app to enable an efficient way of managing DOM elements with React.
-- `react-redux`: The official React bindings for Redux, it lets your React components read data from a Redux store, and dispatch actions to the store to update data.
 - `socket.io-client`: The client-side library of Socket.IO, it enables real-time, bidirectional, and event-based communication between web clients and servers.
 - `dotenv`: A zero-dependency module that loads environment variables from a `.env` file into `process.env`, making it easier to manage configuration in different environments.
 - `firebase`: Google's mobile and web application development platform that provides a variety of tools and services including authentication, real-time database, cloud storage, and cloud messaging.
