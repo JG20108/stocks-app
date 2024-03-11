@@ -88,7 +88,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="stock-info">
       <div className="stock-selection-form">
-        <StockSelectionForm onSubmit={handleSubmit} stockOptions={stockOptions} />
+        <StockSelectionForm onSubmit={handleSubmit} stockOptions={stocks.map(stock => stock.name)} />
       </div>
       <div className="stock-display">
         <div className="stock-cards-container">
