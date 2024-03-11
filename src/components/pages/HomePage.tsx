@@ -46,7 +46,7 @@ const HomePage: React.FC = () => {
         setStocks((currentStocks) => {
           const newTrades = response.data.map((trade: { s: string; p: number }) => {
             const existingStock = currentStocks.find(stock => stock.name === trade.s);
-            const history = existingStock ? [...existingStock.history, trade.p] : [trade.p]; // Update history
+            const history = existingStock ? [...existingStock.history, trade.p] : [trade.p]; // Update history without slicing to keep all data points
             const previousValue = existingStock ? existingStock.currentValue : trade.p; 
             const change = trade.p - previousValue;
             const marginChange = (change / previousValue) * 100;
@@ -109,7 +109,7 @@ const HomePage: React.FC = () => {
             ))}
           </div>
           {stocks.map((stock, index) => (
-            <div key={index} className="stock-graph-container bg-white p-2 mb-8 mx-auto" style={{ maxWidth: '51.25rem', width: '100%' }}>
+            <div key={index} className="stock-graph-container bg-white p-2 mb-8 mx-auto" style={{ maxWidth: '100%', width: '100%' }}>
               <StockGraph data={{
                 labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
                 datasets: [{
@@ -129,3 +129,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
