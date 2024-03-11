@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Displays individual stock information in a card format
 interface StockCardProps {
   stockName: string;
   currentValue: number;
@@ -9,8 +10,10 @@ interface StockCardProps {
 }
 
 const StockCard: React.FC<StockCardProps> = ({ stockName, currentValue, marginChange, change, alertPrice }) => {
+  // Determines background color based on the stock's current value compared to the alert price
   const cardBgColor = currentValue > alertPrice ? 'bg-green-200' : 'bg-red-200';
 
+  // Renders stock information including name, current value, and price change
   return (
     <div className={`p-4 rounded shadow-lg ${cardBgColor}`}>
       <h3 className="text-lg font-bold">{stockName}</h3>

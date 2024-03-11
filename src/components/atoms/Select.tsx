@@ -1,11 +1,13 @@
 import React from 'react';
 
+// Select dropdown component
 interface SelectProps {
   options: string[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
+// Renders a select dropdown with options
 const Select: React.FC<SelectProps> = ({ options, value, onChange }) => {
   return (
     <select

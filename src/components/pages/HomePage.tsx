@@ -9,14 +9,14 @@ interface Stock {
   currentValue: number;
   marginChange: number;
   change: number;
-  history: number[]; // Add this line
+  history: number[]; 
 }
 
 const HomePage: React.FC = () => {
   const stockOptions = useMemo(() => ['AAPL', 'GOOGL', 'BINANCE:BTCUSDT', 'IC MARKETS:1', 'MSFT', 'AMZN', 'BYND', 'UPOW', 'EXCOF', 'FSLY', 'AMD', 'TSLA'], []);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [alertPrices, setAlertPrices] = useState<{ [key: string]: number }>({});
-  const [isLoading, setIsLoading] = useState(true); // Added loading state
+  const [isLoading, setIsLoading] = useState(true); 
 
   // Define handleSubmit function
   const handleSubmit = (selectedStock: string, alertPrice: number) => {
@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
               currentValue: trade.p,
               marginChange: marginChange,
               change: change,
-              history: history.slice(-50) // Keep the last 50 data points
+              history: history // Keep the last 100 data points
             };
           });
           const updatedStocks = [...currentStocks];
@@ -129,3 +129,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+

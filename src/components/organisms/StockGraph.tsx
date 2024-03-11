@@ -4,6 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
+// Graph component for displaying stock price history using Chart.js
 interface StockGraphProps {
   data: {
     labels: string[];
@@ -18,6 +19,7 @@ interface StockGraphProps {
 }
 
 const StockGraph: React.FC<StockGraphProps> = ({ data }) => {
+  // Configures graph options including tooltips and legend
   const options = {
     plugins: {
       tooltip: {
@@ -81,6 +83,7 @@ const StockGraph: React.FC<StockGraphProps> = ({ data }) => {
     backgroundColor: 'white'
   };
 
+  // Renders a line graph with dynamic data and options
   return (
     <div className="bg-white p-2" style={{ height: '30vh', width: '40vw' }}>
       <Line data={data} options={options} />
