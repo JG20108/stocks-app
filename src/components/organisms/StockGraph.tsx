@@ -85,7 +85,7 @@ const StockGraph: React.FC<StockGraphProps> = ({ data }) => {
 
   // Renders a line graph with dynamic data and options
   return (
-    <div className="bg-white p-2" style={{ height: '30vh', width: '40vw' }}>
+    <div className="bg-white p-2" style={{ height: '30vh', width: '100%' }}>
       <Line data={data} options={options} />
     </div>
   );

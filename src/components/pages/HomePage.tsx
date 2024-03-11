@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
               currentValue: trade.p,
               marginChange: marginChange,
               change: change,
-              history: history // Keep the last 100 data points
+              history: history 
             };
           });
           const updatedStocks = [...currentStocks];
@@ -98,18 +98,18 @@ const HomePage: React.FC = () => {
     return <div className="spinner">Loading Stocks from Finnhub API...</div>;
   } else {
     return (
-      <div className="stock-info">
-        <div className="stock-selection-form mr-12">
+      <div className="stock-info flex">
+        <div className="stock-selection-form mr-20">
           <StockSelectionForm onSubmit={handleSubmit} stockOptions={stocks.map(stock => stock.name)} />
         </div>
-        <div className="stock-display">
+        <div className="stock-display flex flex-wrap">
           <div className="stock-cards-container">
             {stocks.map((stock, index) => (
               <StockCard key={index} stockName={stock.name} currentValue={stock.currentValue} marginChange={stock.marginChange} change={stock.change} alertPrice={alertPrices[stock.name] || 0} />
             ))}
           </div>
           {stocks.map((stock, index) => (
-            <div key={index} className="stock-graph-container bg-white p-2 mb-8" style={{ width: '51.25rem' }}>
+            <div key={index} className="stock-graph-container bg-white p-2 mb-8 mx-auto" style={{ maxWidth: '51.25rem', width: '100%' }}>
               <StockGraph data={{
                 labels: stock.history.map((_, i) => i.toString()), // Generate labels based on history length
                 datasets: [{
@@ -129,4 +129,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
