@@ -4,7 +4,7 @@ This application is built using React, TypeScript, and Vite, providing real-time
 
 ## Live Demo 🚀
 
-Check out the live demo of the Stocks App here: [Stocks App Live Demo](https://stocks-hgq496ao1-jg20108.vercel.app)
+Check out the live demo of the Stocks App here: [Stocks App Live Demo](https://stocks-app-eight.vercel.app)
 
 ## Application Structure 🏗️
 
